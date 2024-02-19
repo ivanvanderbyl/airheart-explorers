@@ -3,10 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
-
-env:
-  ENSIGNIA_API_HOST: https://staging-control-plane.ensignia.dev
+      - master
 
 jobs:
   sbom:
@@ -21,11 +18,6 @@ jobs:
 
       - name: Generate SBOM
         run: syft -q packages dir:./ -o spdx-json > build.spdx-sbom.json
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build.spdx-sbom.json
-          path: build.spdx-sbom.json
 
       - name: Upload SBOM
         run: sigctl submit ./build.spdx-sbom.json
